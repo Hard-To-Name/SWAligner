@@ -61,9 +61,39 @@ def print_matrix(matrix):
 
 #add your function(s) to find a solution here.
 
+def track_path(score_matrix, start_pos):
+    cur_i, cur_j = start_pos
+    result = []
+    while not score_matrix[cur_i][cur_j] == 0:
+        result.append([cur_i, cur_j])
+        # Diagonal
+        if seq1[cur_i - 1] == seq2[cur_j - 1] and \
+        score_matrix[cur_i][cur_j] - score_matrix[cur_i - 1][cur_j - 1] == 3 or \
+        not seq1[cur_i - 1] == seq2[cur_j - 1] and \
+        score_matrix[cur_i][cur_j] - score_matrix[cur_i - 1][cur_j - 1] == -3:
+            cur_i -= 1
+            cur_j -= 1
+        # Up
+        elif score_matrix[cur_i][cur_j] + 2 == score_matrix[cur_i - 1][cur_j]:
+            cur_i -= 1
+        # Left
+        else:
+            cur_j -= 1
+    result.append([cur_i, cur_j])
+    return result
+
+def print_path(path):
+    s = ""
+    for p in path:
+        s += str(p) + " -> ";
+    if not s == "": print(s[:-4])
+    else: print("No matches.")
+
 #end of your function(s)
 
 if __name__ == '__main__':
     #my main
     score_matrix, start_pos = create_score_matrix(rows, cols)
     print_matrix(score_matrix)
+    path = track_path(score_matrix, start_pos)
+    print_path(path)
